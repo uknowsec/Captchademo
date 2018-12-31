@@ -1,0 +1,95 @@
+<!DOCUMENT html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
+://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+	<title>JS前端验证验证码案例</title>
+	<style type="text/css">
+		ul li{margin:0;padding:0;}
+		form{margin:40px 30px 0;}
+		form li{list-style:none;padding:5px 0;}
+		form li label{float:left;width:70px;text-align:right}
+		form li a{font-size:12px;color:#999;text-decoration:none}
+		.login_btn{border:none;background:#01A4F1;color:#fff;font-size:14px;font-weight:bold;height:28px;line-height:28px;padding:0 10px;cursor:pointer;}
+		form li img{vertical-align:top}
+		#code{  
+                font-family:Arial;  
+                font-style:italic;  
+                font-weight:bold;  
+                border:0;  
+                letter-spacing:2px;  
+                color:blue;  
+            }
+	</style>
+	<script type="text/javascript" src="./jquery-3.3.1.min.js"></script>
+</head>
+<body>
+<form id="form" action="checkcode.php" method="POST">
+	<fieldset>
+		<legend>用户登录</legend>
+		<ul>
+			<li>
+				<label for="">用户名:</label>
+				<input type="text" name="username"/>
+			</li>
+			<li>
+				<label for="">密码:</label>
+				<input type="password" name="password"/>
+			</li>
+			<li>
+				<label for="">验证码:</label>
+				<input type = "text" id = "input" value="" />  
+				<input type = "button" id="code" "/>  
+				<a href="" onclick ="">看不清，换一张</a>
+			</li>
+			<li>
+				<label for=""> </label>
+				<input type="button" value="登录" class="login_btn" onclick ="validate()"/>
+			</li>
+		</ul>
+	</fieldset>
+</form>
+<script type="text/javascript">
+//设置一个全局的变量，便于保存验证码
+    var code;
+    function createCode(){
+        //首先默认code为空字符串
+        code = '';
+        //设置长度，这里看需求，我这里设置了4
+        var codeLength = 4;
+        var codeV = document.getElementById('code');
+        //设置随机字符
+        var random = new Array(0,1,2,3,4,5,6,7,8,9,'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R', 'S','T','U','V','W','X','Y','Z');
+        //循环codeLength 我设置的4就是循环4次
+        for(var i = 0; i < codeLength; i++){
+            //设置随机数范围,这设置为0 ~ 36
+             var index = Math.floor(Math.random()*36);
+             //字符串拼接 将每次随机的字符 进行拼接
+             code += random[index]; 
+        }
+        //将拼接好的字符串赋值给展示的Value
+        codeV.value = code;
+    }
+
+    //下面就是判断是否== 的代码，无需解释
+    function validate(){
+        var oValue = document.getElementById('input').value.toUpperCase();
+        if(oValue ==0){
+            alert('请输入验证码');
+        }else if(oValue != code){
+            alert('验证码不正确，请重新输入');
+            oValue = ' ';
+            createCode();
+        }else{
+			document.getElementById('form').submit();
+        }
+    }
+
+    //设置此处的原因是每次进入界面展示一个随机的验证码，不设置则为空
+    window.onload = function (){
+
+        createCode();
+    }
+</script>
+</body>
+</html>
